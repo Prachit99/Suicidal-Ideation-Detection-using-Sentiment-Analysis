@@ -1,0 +1,268 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>Login</title>
+  
+  
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+  
+<style>
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400');
+
+* {
+    margin:0;
+    padding:0
+}
+a,a:hover{
+  text-decoration: none;
+}
+.myform-area{
+  overflow: hidden;
+  padding: 60px 0;
+  position: relative;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+.myform-area .form-area{
+  position: relative;
+  background: rgba(103,58,183,0.7);
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  box-shadow: 0 0 40px 0 #e1e1e1;
+}
+
+.myform-area .form-area .form-content,
+.myform-area .form-area .form-input{
+    position: relative;
+    width: 50%;
+    height: 100%;
+    float: left;
+    box-sizing: border-box;
+}
+
+.myform-area .form-area .form-content{
+  width: 50%;
+  padding: 30px;
+}
+
+.myform-area .form-area .form-content h2{
+  color: #fff;
+}
+.myform-area .form-area .form-content p{
+  color: #fff;
+}
+.myform-area .form-area .form-content ul{
+  margin-top: 50px;
+}
+
+.myform-area .form-area .form-content ul li{
+  display: inline-block;
+  margin-right: 10px;
+}
+.myform-area .form-area .form-content a i{
+    margin-right: 10px;
+}
+
+.myform-area .form-area .form-content .reddit{
+  display: block;
+  padding: 10px 20px;
+  background: #FF5700;
+  color: #fff;
+  font-size: 15px;
+  text-transform: capitalize;
+  border-radius: 4px;
+  border: 1px solid #FF5700;
+  -webkit-transition: all .5s;
+  -o-transition: all .5s;
+  transition: all .5s;
+}
+
+.myform-area .form-area .form-content .reddit:hover,
+.myform-area .form-area .form-content .reddit:focus{
+    background: transparent;
+}
+
+.myform-area .form-area .form-content .twitter{
+  display: block;
+   padding: 10px 20px;
+   background: #00ACED;
+   color: #fff;
+   font-size: 15px;
+   text-transform: capitalize;
+   border-radius: 4px;
+   border: 1px solid #00ACED;
+   -webkit-transition: all .5s;
+   -o-transition: all .5s;
+   transition: all .5s;
+}
+
+.myform-area .form-area .form-content .twitter:hover,
+.myform-area .form-area .form-content .twitter:focus{
+    background: transparent;
+}
+.myform-area .form-area .form-input{
+  background-color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 40px 0 #e1e1e1;
+}
+.myform-area .form-area .form-input{
+    width: 50%;
+    background: #fff;
+    padding: 40px 30px;
+}
+
+.myform-area .form-area .form-input h2{
+  margin-bottom: 20px;
+    color: #07315B;
+}
+
+.myform-area .form-area .form-input input{
+    position: relative;
+    height: 60px;
+    padding: 20px 0;
+}
+.myform-area .form-area .form-input textarea{
+    height: 120px;
+    padding: 20px 0;
+}
+
+.myform-area .form-area .form-input input,
+.myform-area .form-area .form-input textarea{
+    text-transform: capitalize;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #e1e1e1;
+    color: #07315B;
+}
+.myform-area .form-area .form-input form .form-group{
+    position: relative;
+}
+.myform-area .form-area .form-input form .form-group label{
+    position: absolute;
+    text-transform: capitalize;
+    top: 20px;
+    left: 0;
+    pointer-events: none;
+    font-size: 14px;
+    color: #595959;
+    margin-bottom: 0;
+    transition: all .6s;
+}
+.myform-area .form-area .form-input input:focus ~ label,
+.myform-area .form-area .form-input textarea:focus ~ label,
+.myform-area .form-area .form-input input:valid ~ label,
+.myform-area .form-area .form-input textarea:valid ~ label{
+    top: -5px;
+    opacity: 0;
+    left: 0;
+    color: rgba(103,58,183);
+    font-size: 12px;
+    color: #07315B;
+    font-weight: bold;
+}
+.myform-area .form-area .form-input input:focus,
+.myform-area .form-area .form-input textarea:focus,
+.myform-area .form-area .form-input input:valid,
+.myform-area .form-area .form-input textarea:valid{
+    border-bottom: 2px solid rgba(103,58,183);
+}
+.myform-area .form-area .form-text{
+    margin-top: 30px;
+}
+.myform-area .form-area .form-text span a{
+    color: rgba(103,58,183);
+}
+.myform-area .form-area .myform-button{
+    margin-top: 30px;
+}
+.myform-area .form-area .myform-button .myform-btn{
+    width: 100%;
+    height: 50px;
+    font-size: 17px;
+    background: rgba(103,58,183);
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    cursor: pointer;
+    -webkit-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+}
+.myform-area .form-area .myform-button .myform-btn:hover{
+    background: #07315B;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+
+
+</head>
+{% load static %}
+<body translate="no" class="parallax">
+  <section class="myform-area">
+              <div class="container">
+                  <div class="row justify-content-center">
+                      <div class="col-lg-8">
+                          <div class="form-area login-form">
+                              <div class="form-content">
+                                <h2>Predict using the model</h2>
+                                <form method="POST" action={% url 'test' %}>
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <textarea class="form-control" type="text"  id="text_post" name="text_post" rows="3"> </textarea>
+                                    </div>                                  
+                                <ul>
+                                  <li><button class="reddit"><input type="radio" name="platform" checked="checked"><i class="fa fa-reddit"></i><span>reddit</span></input></button></li>
+                                  <li><button class="twitter"><input type= "radio" name="platform"><i class="fa fa-twitter"></i><span>twitter</span></input></button></li>
+                                </ul>
+                              <div class="myform-button">
+                                <button class="myform-btn" name="predict" > Predict </button>
+                            </div>  
+                                </form>  
+                              </div>
+                              <div class="form-input">
+                                  <h2>Login Form</h2>
+                                  <form>
+                                      <div class="form-group">
+                                          <input type="text"  id="" name="name" required>
+                                          <label>User Name</label>
+                                      </div>
+                                      <div class="form-group">
+                                          <input type="password" id="" name="password" required>
+                                          <label>password</label>
+                                      </div>
+                                      <div class="myform-button">
+                                          <button class="myform-btn">Login</button>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+  
+</body>
+
+</html>
+ 
