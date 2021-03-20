@@ -5,6 +5,9 @@ import joblib
 def login(request):
     return render(request, "login.html")
 
+def home(request):
+    return render(request, "home.html")
+
 def test(request):
     #cls = joblib.load("model.sav")
     output = request.POST.get('text_post', False)
