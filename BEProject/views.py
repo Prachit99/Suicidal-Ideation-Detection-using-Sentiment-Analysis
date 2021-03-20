@@ -2,13 +2,13 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-import joblib
 import os
 import tweepy as tw
 import pandas as pd
 from datetime import date
-from keras import Sequential
-from keras.layers import Dense, Reshape, Dropout
+import numpy as np
+from tensorflow.keras.models import model_from_json
+import tensorflow_hub as hub
 
 
 @login_required
@@ -37,10 +37,15 @@ def home(request):
 
 def test(request):
     output = ""
-    model = joblib.load("Models/reddit_classifier.sav")
-    print(type(mod))
-    raw_text = request.POST.get('text_post', False)
-    if bool(raw_text):
-        output = model.predict(np.array([raw_text]))
+    with open('model.json', 'r') as f: 
+        json = f.read() 
+    loaded_model = model_from_json(json, custom_objects={'KerasLayer': hub.KerasLayer})
+
+    # load weights into new model
+    loaded_model.load_weights("model.h5")
+    print("Loaded model from disk")
+    
+    # evaluate loaded model on test data
+    output = loaded_model.predict(np.array(["is it strange when a part of you wishes to get corona with the hope to die?"]))
     return render(request, "test.html", {'output': output})
 
