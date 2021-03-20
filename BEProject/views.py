@@ -7,8 +7,9 @@ import tweepy as tw
 import pandas as pd
 from datetime import date
 import numpy as np
-from tensorflow.keras.models import model_from_json
-import tensorflow_hub as hub
+import tensorflow as tf
+#from tensorflow.keras.models import model_from_json
+#import tensorflow_hub as hub
 
 
 @login_required
@@ -21,7 +22,7 @@ def home(request):
     auth.set_access_token(access_token, access_token_secret)
     api = tw.API(auth, wait_on_rate_limit=True)
     search_words = ["suicide","suicidal","mentalhealth","selfharm","hatemyself","iwanttodie"]
-    date_since = date.today()
+    date_since = 19-3-21
     tweetstore = []
     for search_word in search_words:
         # Collect tweets
