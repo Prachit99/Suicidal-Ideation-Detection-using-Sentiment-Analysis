@@ -1,11 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 import joblib
 import os
 import tweepy as tw
 import pandas as pd
 from datetime import date
+from keras import Sequential
+from keras.layers import Dense, Reshape, Dropout
 
 
 @login_required
@@ -33,8 +36,11 @@ def home(request):
     return render(request, "home.html", {'df': df})
 
 def test(request):
-    #cls = joblib.load("model.sav")
-    output = request.POST.get('text_post', False)
-    #    output = cls.predict([raw_text])
+    output = ""
+    model = joblib.load("Models/reddit_classifier.sav")
+    print(type(mod))
+    raw_text = request.POST.get('text_post', False)
+    if bool(raw_text):
+        output = model.predict(np.array([raw_text]))
     return render(request, "test.html", {'output': output})
 
