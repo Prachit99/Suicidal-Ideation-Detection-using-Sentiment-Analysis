@@ -232,7 +232,7 @@ a,a:hover{
                       <form method="POST" action={% url 'test' %}>
                           {% csrf_token %}
                           <div class="form-group">
-                              <textarea class="form-control" type="text"  id="text_post" name="text_post" rows=3> </textarea>
+                              <textarea class="form-control" type="text" id="text_post" name="text_post" rows=3 required></textarea>
                           </div>                                  
                       <ul>
                         <li><div class="reddit"><input type="radio" name="platform" checked value="reddit"><i class="fa fa-reddit"></i><span>reddit</span></input></div></li>

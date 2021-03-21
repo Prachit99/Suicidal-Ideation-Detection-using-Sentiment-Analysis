@@ -1,8 +1,14 @@
+from tensorflow.keras.models import model_from_json
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+import tensorflow_hub as hub
+import pickle
 import preprocessor as p
 import re
 import tweepy as tw
 from datetime import date
 import pandas as pd
+import numpy as np
 
 def preprocess_tweet(tweet):
     tweet = p.clean(tweet)
@@ -104,6 +110,28 @@ def preprocess_tweet(tweet):
     tweet = tweet.lower().replace('[^\w\s]',' ').replace('\s\s+', ' ')
     return tweet
 
+def twitter_model(raw_input):
+    raw_input = preprocess_tweet(raw_input)
+    with open('Models/tokenizer.pickle', 'rb') as handle:
+        tokenizer = pickle.load(handle)
+
+    seq = tokenizer.texts_to_sequences([raw_input])
+    padded_sequence = pad_sequences(seq, maxlen=200)
+    with open('Models/model_t.json', 'r') as f: 
+        json = f.read() 
+    loaded_model = model_from_json(json)
+    loaded_model.load_weights("Models/model_t.h5")
+    output = loaded_model.predict(padded_sequence)
+    return output
+
+def reddit_model(raw_input):
+    with open('Models/model_r.json', 'r') as f: 
+        json = f.read() 
+    loaded_model = model_from_json(json, custom_objects={'KerasLayer': hub.KerasLayer})
+    loaded_model.load_weights("Models/model_r.h5")
+    output = loaded_model.predict(np.array([raw_input]))
+    return output
+
 def twitter_scrape():
     consumer_key = '1ljbylLYSgk6FIpepCzhQVKUE'
     consumer_secret = 'WGIsKEobyGx2FbS3uvZfVMeFAOwMmusvGCTqjuSnqbU7TQI4N3'
@@ -134,3 +162,5 @@ def reddit_scrape():
     for post in all_subreddit.hot(limit=100):
         posts2.append([post.title, post.selftext])
     posts2 = pd.DataFrame(posts2,columns=['title','body'])
+
+
