@@ -154,7 +154,7 @@ def twitter_scrape():
         for tweet in tweets:
             tweetstore.append(tweet.text) 
             userid.append(tweet.user.id)
-    df = pd.DataFrame({'Id': userid, 'Posts': tweetstore})
+    return userid, tweetstore
 
 def reddit_scrape():
     reddit = praw.Reddit(client_id='uycdldw7XT9KNA', client_secret='mdW0O0OD7np6UpM67VVCozeUvdEPvw', user_agent='Reddit webscrapping')

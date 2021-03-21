@@ -9,8 +9,8 @@ from . import utils
 
 @login_required
 def home(request):
-    df = utils.twitter_scrape()
-    return render(request, "home.html", {'df': df})
+    userid, tweets = utils.twitter_scrape()
+    return render(request, "home.html", {'id': userid, 'tweets': tweets})
 
 def test(request):
     output = ""
