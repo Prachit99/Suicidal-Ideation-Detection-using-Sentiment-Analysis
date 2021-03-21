@@ -7,9 +7,8 @@ import tweepy as tw
 import pandas as pd
 from datetime import date
 import numpy as np
-import tensorflow as tf
-#from tensorflow.keras.models import model_from_json
-#import tensorflow_hub as hub
+from tensorflow.keras.models import model_from_json
+import tensorflow_hub as hub
 
 
 @login_required
@@ -38,15 +37,15 @@ def home(request):
 
 def test(request):
     output = ""
-    with open('model.json', 'r') as f: 
+    with open('Models/model.json', 'r') as f: 
         json = f.read() 
     loaded_model = model_from_json(json, custom_objects={'KerasLayer': hub.KerasLayer})
 
     # load weights into new model
-    loaded_model.load_weights("model.h5")
+    loaded_model.load_weights("Models/model.h5")
     print("Loaded model from disk")
-    
+    raw_input = request.POST.get('text_post', 'is it strange when a part of you wishes to get corona with the hope to die?')
     # evaluate loaded model on test data
-    output = loaded_model.predict(np.array(["is it strange when a part of you wishes to get corona with the hope to die?"]))
+    output = loaded_model.predict(np.array([raw_input]))
     return render(request, "test.html", {'output': output})
 
