@@ -1,9 +1,11 @@
 import preprocessor as p
 import re
+import tweepy as tw
+from datetime import date
+import pandas as pd
 
 def preprocess_tweet(tweet):
     tweet = p.clean(tweet)
-
     # Contractions
     tweet = re.sub(r"\x89Ûª", "'", tweet)
     tweet = re.sub(r"he's", "he is", tweet)
@@ -101,3 +103,34 @@ def preprocess_tweet(tweet):
     tweet = re.sub(r"&amp;", "&", tweet)
     tweet = tweet.lower().replace('[^\w\s]',' ').replace('\s\s+', ' ')
     return tweet
+
+def twitter_scrape():
+    consumer_key = '1ljbylLYSgk6FIpepCzhQVKUE'
+    consumer_secret = 'WGIsKEobyGx2FbS3uvZfVMeFAOwMmusvGCTqjuSnqbU7TQI4N3'
+    access_token = '839721048538914817-01LEnkpGcjdDXL8grKxJ8r7UvrkVqQ6'
+    access_token_secret = 'GgByKXcBqQoW0G3sz4clhNWryOWCKKHzFkVn0yscHSkej'
+    auth = tw.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tw.API(auth, wait_on_rate_limit=True)
+    search_words = ["suicide","suicidal","mentalhealth","selfharm","hatemyself","iwanttodie"]
+    date_since = date.today()
+    tweetstore = []
+    userid = []
+    for search_word in search_words:
+        # Collect tweets
+        tweets = tw.Cursor(api.search,
+                    q=search_word,
+                    lang="en",
+                    since=date_since).items(100)
+        # Collect a list of tweets
+        for tweet in tweets:
+            tweetstore.append(tweet.text) 
+            userid.append(tweet.user.id)
+    df = pd.DataFrame({'Id': userid, 'Posts': tweetstore})
+
+def reddit_scrape():
+    reddit = praw.Reddit(client_id='uycdldw7XT9KNA', client_secret='mdW0O0OD7np6UpM67VVCozeUvdEPvw', user_agent='Reddit webscrapping')
+    all_subreddit = reddit.subreddit('all')
+    for post in all_subreddit.hot(limit=100):
+        posts2.append([post.title, post.selftext])
+    posts2 = pd.DataFrame(posts2,columns=['title','body'])
