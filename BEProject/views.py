@@ -8,7 +8,10 @@ import pandas as pd
 from datetime import date
 import numpy as np
 from tensorflow.keras.models import model_from_json
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 import tensorflow_hub as hub
+from . import utils
 
 
 @login_required
@@ -37,15 +40,35 @@ def home(request):
 
 def test(request):
     output = ""
-    with open('Models/model.json', 'r') as f: 
-        json = f.read() 
-    loaded_model = model_from_json(json, custom_objects={'KerasLayer': hub.KerasLayer})
+    print(request.POST.get('platform','reddit'))
+    if request.POST.get('platform', 'reddit') == 'twitter':
+        raw_input = [[request.POST.get('text_post', 'is it strange when a part of you wishes to get corona with the hope to die?')]]
+        df = pd.DataFrame(raw_input, columns=['text'])
+        df['text'] = df.apply(utils.preprocess_tweet, axis=1)
+        df['text'] = df.apply(utils.stopword_removal, axis=1)
+        tweet=df.text.values
+        tokenizer=Tokenizer(num_words=5000)
+        tokenizer.fit_on_texts(tweet)
+        vocab_size=len(tokenizer.word_index)+1
+        encoded_docs=tokenizer.texts_to_sequences(tweet)
+        padded_sequence = pad_sequences(encoded_docs, maxlen=200)
+        with open('Models/model_t.json', 'r') as f: 
+            json = f.read() 
+        loaded_model = model_from_json(json)
 
-    # load weights into new model
-    loaded_model.load_weights("Models/model.h5")
-    print("Loaded model from disk")
-    raw_input = request.POST.get('text_post', 'is it strange when a part of you wishes to get corona with the hope to die?')
-    # evaluate loaded model on test data
-    output = loaded_model.predict(np.array([raw_input]))
-    return render(request, "test.html", {'output': output})
+        # load weights into new model
+        loaded_model.load_weights("Models/model_t.h5")
+        output = loaded_model.predict(padded_sequence)
+
+    else:
+        with open('Models/model_r.json', 'r') as f: 
+            json = f.read() 
+        loaded_model = model_from_json(json, custom_objects={'KerasLayer': hub.KerasLayer})
+
+        # load weights into new model
+        loaded_model.load_weights("Models/model_r.h5")
+        raw_input = request.POST.get('text_post', 'is it strange when a part of you wishes to get corona with the hope to die?')
+        # evaluate loaded model on test data
+        output = loaded_model.predict(np.array([raw_input]))
+    return render(request, "test.html", {'input': raw_input, 'output': output})
 

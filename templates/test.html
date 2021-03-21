@@ -235,8 +235,8 @@ a,a:hover{
                               <textarea class="form-control" type="text"  id="text_post" name="text_post" rows=3> </textarea>
                           </div>                                  
                       <ul>
-                        <li><button class="reddit"><input type="radio" name="platform" checked="checked"><i class="fa fa-reddit"></i><span>reddit</span></input></button></li>
-                        <li><button class="twitter"><input type= "radio" name="platform"><i class="fa fa-twitter"></i><span>twitter</span></input></button></li>
+                        <li><div class="reddit"><input type="radio" name="platform" checked value="reddit"><i class="fa fa-reddit"></i><span>reddit</span></input></div></li>
+                        <li><div class="twitter"><input type= "radio" name="platform" value="twitter"><i class="fa fa-twitter"></i><span>twitter</span></input></div></li>
                       </ul>
                       <div class="myform-button">
                         <button class="myform-btn" name="predict" > Predict </button>
@@ -245,6 +245,7 @@ a,a:hover{
                     </div>
                     <div class="form-input">
                         <h2>Output</h2>
+                        {{input}}<br>
                         {{output}}
                     </div>
                 </div>
