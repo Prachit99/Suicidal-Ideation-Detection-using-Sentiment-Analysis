@@ -10,6 +10,7 @@ from datetime import date
 import pandas as pd
 import numpy as np
 import time
+import praw
 
 def preprocess_tweet(tweet):
     tweet = p.clean(tweet)
@@ -142,7 +143,7 @@ def twitter_scrape():
     auth.set_access_token(access_token, access_token_secret)
     api = tw.API(auth, wait_on_rate_limit=True)
     search_words = ["suicide","suicidal","selfharm","hatemyself","iwanttodie", "cutmyself"]
-    date_since = date.today()
+    date_since = "20-03-2021"
     tweetstore = []
     userid = []
     username = []
@@ -159,19 +160,21 @@ def twitter_scrape():
             userid.append(tweet.user.id)
             username.append(tweet.user.name)
             created.append(tweet.created_at)
+    print(tweetstore)
     return [userid, username, tweetstore, created]
 
 def reddit_scrape():
     reddit = praw.Reddit(client_id='uycdldw7XT9KNA', client_secret='mdW0O0OD7np6UpM67VVCozeUvdEPvw', user_agent='Reddit webscrapping')
-    all_subreddit = reddit.subreddit('all')
+    all_subreddit = reddit.subreddit('SuicideWatch+depression+selharm').new(limit=100)
     reddits = []
     userid = []
     created = []
-    for post in all_subreddit.submissions(time.time()-86400,time.time()):
+    username = []
+    for post in all_subreddit:
         reddits.append(post.selftext)
         userid.append(post.author.id)
         username.append(post.author.name)
-        created.append(post.created_utc)
+        created.append(time.ctime(int(post.created_utc)))
     return [userid, username, reddits, created]
 
 
