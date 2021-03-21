@@ -9,6 +9,7 @@ import tweepy as tw
 from datetime import date
 import pandas as pd
 import numpy as np
+import time
 
 def preprocess_tweet(tweet):
     tweet = p.clean(tweet)
@@ -140,10 +141,12 @@ def twitter_scrape():
     auth = tw.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tw.API(auth, wait_on_rate_limit=True)
-    search_words = ["suicide","suicidal","mentalhealth","selfharm","hatemyself","iwanttodie"]
+    search_words = ["suicide","suicidal","selfharm","hatemyself","iwanttodie", "cutmyself"]
     date_since = date.today()
     tweetstore = []
     userid = []
+    username = []
+    created = []
     for search_word in search_words:
         # Collect tweets
         tweets = tw.Cursor(api.search,
@@ -154,13 +157,21 @@ def twitter_scrape():
         for tweet in tweets:
             tweetstore.append(tweet.text) 
             userid.append(tweet.user.id)
-    return userid, tweetstore
+            username.append(tweet.user.name)
+            created.append(tweet.created_at)
+    return [userid, username, tweetstore, created]
 
 def reddit_scrape():
     reddit = praw.Reddit(client_id='uycdldw7XT9KNA', client_secret='mdW0O0OD7np6UpM67VVCozeUvdEPvw', user_agent='Reddit webscrapping')
     all_subreddit = reddit.subreddit('all')
-    for post in all_subreddit.hot(limit=100):
-        posts2.append([post.title, post.selftext])
-    posts2 = pd.DataFrame(posts2,columns=['title','body'])
+    reddits = []
+    userid = []
+    created = []
+    for post in all_subreddit.submissions(time.time()-86400,time.time()):
+        reddits.append(post.selftext)
+        userid.append(post.author.id)
+        username.append(post.author.name)
+        created.append(post.created_utc)
+    return [userid, username, reddits, created]
 
 
