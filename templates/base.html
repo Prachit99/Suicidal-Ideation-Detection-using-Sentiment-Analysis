@@ -3,8 +3,11 @@
     <head>
         <meta charset = "urf-8" name = "viewport" content = "width=device-width, initial-scale=1"/>
         {% load static %}
-        <link rel = "stylesheet" type = "text/css" href = "{% static 'table/css/bootstrap.css' %}"/>
-        <link rel = "stylesheet" type = "text/css" href = "{% static 'table/css/jquery.dataTables.css' %}"/>
+        <link rel = "stylesheet" type = "text/css" href = "https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css"/>
+        <link rel = "stylesheet" type = "text/css" href = "https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
+        <link type = "text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+     
+        
     </head>
 <body>
     <nav class = "navbar navbar-default" >
@@ -21,8 +24,8 @@
     </div>
  
 </body>
-<script src = "{% static 'table/js/jquery-3.2.1.js' %}"></script>
-<script src = "{% static 'table/js/jquery.dataTables.js' %}"></script>
+<script src = "https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src = "https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script type = "text/javascript">
     $(document).ready(function(){
         $('#table').DataTable();
