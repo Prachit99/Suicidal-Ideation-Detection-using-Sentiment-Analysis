@@ -11,6 +11,7 @@ from tensorflow.keras.models import model_from_json
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 import tensorflow_hub as hub
+import pickle
 from . import utils
 
 
@@ -42,16 +43,13 @@ def test(request):
     output = ""
     print(request.POST.get('platform','reddit'))
     if request.POST.get('platform', 'reddit') == 'twitter':
-        raw_input = [[request.POST.get('text_post', 'is it strange when a part of you wishes to get corona with the hope to die?')]]
-        df = pd.DataFrame(raw_input, columns=['text'])
-        df['text'] = df.apply(utils.preprocess_tweet, axis=1)
-        df['text'] = df.apply(utils.stopword_removal, axis=1)
-        tweet=df.text.values
-        tokenizer=Tokenizer(num_words=5000)
-        tokenizer.fit_on_texts(tweet)
-        vocab_size=len(tokenizer.word_index)+1
-        encoded_docs=tokenizer.texts_to_sequences(tweet)
-        padded_sequence = pad_sequences(encoded_docs, maxlen=200)
+        raw_input = request.POST.get('text_post', 'is it strange when a part of you wishes to get corona with the hope to die?')
+        raw_input = utils.preprocess_tweet(raw_input)
+        with open('Models/tokenizer.pickle', 'rb') as handle:
+            tokenizer = pickle.load(handle)
+
+        seq = tokenizer.texts_to_sequences([raw_input])
+        padded_sequence = pad_sequences(seq, maxlen=200)
         with open('Models/model_t.json', 'r') as f: 
             json = f.read() 
         loaded_model = model_from_json(json)

@@ -1,9 +1,7 @@
 import preprocessor as p
-from gensim.parsing.preprocessing import remove_stopwords
 import re
 
-def preprocess_tweet(row):
-    tweet = row['text']
+def preprocess_tweet(tweet):
     tweet = p.clean(tweet)
 
     # Contractions
@@ -98,15 +96,8 @@ def preprocess_tweet(row):
     tweet = re.sub(r"Haven't", "Have not", tweet)
     tweet = re.sub(r"Could've", "Could have", tweet)
     tweet = re.sub(r"youve", "you have", tweet)  
-    tweet = re.sub(r"donå«t", "do not", tweet)   
-            
+    tweet = re.sub(r"donå«t", "do not", tweet)        
     # Character entity references
     tweet = re.sub(r"&amp;", "&", tweet)
-    return tweet
-
-def stopword_removal(row):
-    tweet = row['text']
-    tweet = remove_stopwords(tweet)
     tweet = tweet.lower().replace('[^\w\s]',' ').replace('\s\s+', ' ')
     return tweet
-
