@@ -10,6 +10,7 @@ from datetime import date
 import pandas as pd
 import numpy as np
 import time
+from datetime import datetime
 import praw
 
 def preprocess_tweet(tweet):
@@ -143,38 +144,45 @@ def twitter_scrape():
     auth.set_access_token(access_token, access_token_secret)
     api = tw.API(auth, wait_on_rate_limit=True)
     search_words = ["suicide","suicidal","selfharm","hatemyself","iwanttodie", "cutmyself"]
-    date_since = "20-03-2021"
     tweetstore = []
     userid = []
     username = []
     created = []
+    platform = []
     for search_word in search_words:
         # Collect tweets
         tweets = tw.Cursor(api.search,
                     q=search_word,
-                    lang="en",
-                    since=date_since).items(100)
+                    lang="en").items(100)
         # Collect a list of tweets
         for tweet in tweets:
             tweetstore.append(tweet.text) 
             userid.append(tweet.user.id)
             username.append(tweet.user.name)
             created.append(tweet.created_at)
-    print(tweetstore)
-    return [userid, username, tweetstore, created]
+            platform.append("twitter")
+    df = pd.DataFrame({"userid": userid, "username": username, "post": tweetstore, "created": created, "platform": platform})
+    return df
 
 def reddit_scrape():
     reddit = praw.Reddit(client_id='uycdldw7XT9KNA', client_secret='mdW0O0OD7np6UpM67VVCozeUvdEPvw', user_agent='Reddit webscrapping')
-    all_subreddit = reddit.subreddit('SuicideWatch+depression+selharm').new(limit=100)
+    all_subreddit = reddit.subreddit('SuicideWatch+depression+selharm').hot(limit=100)
     reddits = []
     userid = []
     created = []
     username = []
+    platform = []
     for post in all_subreddit:
         reddits.append(post.selftext)
-        userid.append(post.author.id)
-        username.append(post.author.name)
-        created.append(time.ctime(int(post.created_utc)))
-    return [userid, username, reddits, created]
+        if post.author:
+            userid.append(post.author.id)
+            username.append(post.author.name)
+        else:
+            userid.append('NA')
+            username.append('NA')
+        created.append(datetime.fromtimestamp(int(post.created_utc)))
+        platform.append("reddit")
+    df = pd.DataFrame({"userid": userid, "username": username, "post": reddits, "created": created, "platform": platform})
+    return df
 
 

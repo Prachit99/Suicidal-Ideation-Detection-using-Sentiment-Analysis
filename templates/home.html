@@ -6,44 +6,29 @@
 </head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
 <style>
-    .jumbotron {
-    position: relative;
-    background:none;
-    }
-    .jumbotron:after {
-        content : "";
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background-color: white;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        width: 100%;
-        height: 100%;
-        opacity : 0.8;
-        z-index: -1;
-    }
     .body{
         background-image: url(https://static.wixstatic.com/media/nsplsh_5cbfbd7d73d44d61bc9c6f4a0cd9d3b8~mv2.jpg/v1/fill/w_2000,h_2667,al_c,q_90,usm_0.66_1.00_0.01/nsplsh_5cbfbd7d73d44d61bc9c6f4a0cd9d3b8~mv2.jpg);
         background-repeat: no-repeat;
-        background-position: center;
+        background-position: bottom;
         background-attachment: scroll;
         background-size: 2000px 2667px;
+        max-height: 2000px, 2737px;
     }
 </style>
 <body class="body">
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-    <a class="navbar-brand" href="#">SI recognition system</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+  <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="nav-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
     </button>
-  
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    
+    <!-- Brand -->
+    <a class="navbar-brand" disabled>SI recognition system</a>
+    
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="nav-content">   
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" disabled>Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,26 +41,14 @@
           </div>
         </li>
       </ul>
-    </div>
-  </nav>
-  
-  <div class="jumbotron pt-6">
-    <h1 class="display-4">Hello, Admin!</h1>
-    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-  </div>
-  
-  
-  <main>
+    </nav>
+
+
+  <main style="margin-top: 70px;">
     {% block content %}
-    {{ tweet }}
     {% endblock %}
 
   </main>
-
-<br>
-<br>
-<br>
-<br>
 
 </body>
 <script>

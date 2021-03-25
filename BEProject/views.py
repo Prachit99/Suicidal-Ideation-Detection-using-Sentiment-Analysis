@@ -10,11 +10,7 @@ from . import utils
 @login_required
 def home(request):
     twitter_data = utils.twitter_scrape()
-<<<<<<< HEAD
-    reddit_data = []
-=======
-    #reddit_data = utils.reddit_scrape()
->>>>>>> 0db8e55b764b32b662e50c908f474f72852a10c5
+    reddit_data = utils.reddit_scrape()
     return render(request, "home.html", {'twitter': twitter_data, 'reddit': reddit_data})
 
 def dataTable(request):

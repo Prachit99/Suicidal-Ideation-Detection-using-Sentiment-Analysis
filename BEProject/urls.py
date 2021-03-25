@@ -25,5 +25,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('test/', views.test, name="test"),
     path('', views.home, name='home'),
+    path('stats/', include('stats.urls')),
     path('dataTable/',views.dataTable,name="dataTable")
 ]
