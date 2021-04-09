@@ -18,7 +18,7 @@ def test(request):
     raw_input = request.POST.get('text_post', 'This is the suicidal ideation detection website!')
     if platform == 'twitter':
         output = utils.twitter_model(raw_input[:280])
-        if output>0.8:
+        if output>0.9:
             final_output = 2
         elif output>0.7:
             final_output = 1
@@ -45,6 +45,9 @@ def annotate(request):
     posts = df[col1]
     df[col1] = df[col1].apply(str)
     df["output"] = df[col1].apply(utils.twitter_model)
+    df["output"] = df["output"].apply(float)
+    df.loc[df["output"]>=0.7, "class"] = "suicidal" 
+    df.loc[df["output"]<0.7, "class"] = "not suicidal" 
     df[col1] = posts
     output_file = df.to_csv(index=False)
     response = HttpResponse(output_file, content_type='application/x-download')
