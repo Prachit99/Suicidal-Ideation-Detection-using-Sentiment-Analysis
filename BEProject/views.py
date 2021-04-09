@@ -26,9 +26,9 @@ def test(request):
             final_output = 0
     else:
         output = utils.reddit_model(raw_input)
-        if output<=0.09:
+        if output>=0.95:
             final_output = 2
-        elif output<=0.15:
+        elif output>=0.85:
             final_output = 1
         else:
             final_output = 0
