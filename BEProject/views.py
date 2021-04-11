@@ -8,10 +8,6 @@ import pandas as pd
 import numpy as np
 from . import utils
 
-@login_required
-def home(request):
-    return render(request, "home.html")
-
 def test(request):
     output = ""
     platform = request.POST.get('platform', 'reddit')
