@@ -8,7 +8,7 @@ output_choices = [("0", "Low"), ("1", "Medium"), ("2", "High"), ("-1", "Untested
 class Record(models.Model):
     userid = models.CharField(max_length=20)
     username = models.CharField(max_length=100)
-    content = models.TextField()
+    content = models.TextField(unique=True)
     created = models.DateTimeField()
     modified = models.DateTimeField(auto_now=True)
     platform = models.CharField(choices=platform_choices, max_length=7)
