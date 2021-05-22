@@ -148,19 +148,33 @@ def preprocess_tweet(tweet):
     clean_tweet = ' '.join(map(str, tweets_clean))
     return clean_tweet
 
-def twitter_model(raw_input):
-    clean_tweet = preprocess_tweet(raw_input)
-    with open('Models/tokenizer_t.pickle', 'rb') as handle:
+def sarcasm_model(raw_input):
+    with open('Models/sarcasm_model/tokenizer_s.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
-    tw = tokenizer.texts_to_sequences([clean_tweet]) #test_word
+    tw = tokenizer.texts_to_sequences([raw_input]) #test_word
     tw = pad_sequences(tw,maxlen=200)
-    with open('Models/model_t.json', 'r') as f: 
+    with open('Models/sarcasm_model/model_s.json', 'r') as f: 
         json = f.read() 
     f.close()
     loaded_model = model_from_json(json)
-    loaded_model.load_weights("Models/model_t.h5")
+    loaded_model.load_weights("Models/sarcasm_model/model_s.h5")
     output = loaded_model.predict(tw)
     return output[0][0]
+
+def twitter_model(raw_input):
+    clean_tweet = preprocess_tweet(raw_input)
+    sarc_op = sarcasm_model(clean_tweet)
+    with open('Models/twitter_model/tokenizer_t.pickle', 'rb') as handle:
+        tokenizer = pickle.load(handle)
+    tw = tokenizer.texts_to_sequences([clean_tweet]) #test_word
+    tw = pad_sequences(tw,maxlen=200)
+    with open('Models/twitter_model/model_t.json', 'r') as f: 
+        json = f.read() 
+    f.close()
+    loaded_model = model_from_json(json)
+    loaded_model.load_weights("Models/twitter_model/model_t.h5")
+    output = loaded_model.predict(tw)
+    return output[0][0], sarc_op
 
 def reddit_model(raw_input):
     loaded_model = load_model("Models/reddit_model", custom_objects={"KerasLayer": hub.KerasLayer}, compile=False)
@@ -185,7 +199,7 @@ def twitter_scrape():
         # Collect tweets
         tweets = tw.Cursor(api.search,
                     q=search_word,
-                    lang="en").items(1)
+                    lang="en").items(10)
         # Collect a list of tweets
         for tweet in tweets:
             tweetstore.append(tweet.text) 
@@ -198,7 +212,7 @@ def twitter_scrape():
 
 def reddit_scrape():
     reddit = praw.Reddit(client_id='uycdldw7XT9KNA', client_secret='mdW0O0OD7np6UpM67VVCozeUvdEPvw', user_agent='Reddit webscrapping')
-    all_subreddit = reddit.subreddit('SuicideWatch+depression+selharm').hot(limit=1)
+    all_subreddit = reddit.subreddit('SuicideWatch+depression+selharm').hot(limit=10)
     reddits = []
     userid = []
     created = []
