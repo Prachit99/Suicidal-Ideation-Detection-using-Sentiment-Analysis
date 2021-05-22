@@ -2,15 +2,15 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.db.models import Count
+
 from stats.models import Record
-import os
 import pandas as pd
-import numpy as np
 from . import utils
 
 def test(request):
     output = ""
-    platform = request.POST.get('platform', 'reddit')
+    platform = request.POST.get('platform', 'twitter')
     raw_input = request.POST.get('text_post', 'This is the suicidal ideation detection website!')
     if platform == 'twitter':
         output = utils.twitter_model(raw_input[:280])
@@ -53,4 +53,9 @@ def annotate(request):
 @login_required
 def record(request):
     records = Record.objects.all()
+    return render(request, "records.html", {'records': records})
+
+@login_required
+def chart(request):
+    records = Record.objects.values('username','output').annotate(count=Count('username', 'output')).order_by('created')
     return render(request, "records.html", {'records': records})

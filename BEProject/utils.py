@@ -1,24 +1,22 @@
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.models import model_from_json
-from tensorflow.keras.models import load_model
-import tensorflow as tf
-import tensorflow_hub as hub
 import pickle
-import preprocessor as p
 import re
-import tweepy as tw
-from datetime import date
-import pandas as pd
-import numpy as np
-import time
 from datetime import datetime
-import praw
+
 import nltk
+import numpy as np
+import pandas as pd
+import praw
+import tensorflow_hub as hub
+import tweepy as tw
+from tensorflow.keras.models import load_model, model_from_json
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+
 stopwords = nltk.download('stopwords')
+import string
+
 from nltk.stem import PorterStemmer
 from nltk.tokenize import TweetTokenizer
-import string
+
 
 def preprocess_tweet(tweet):
     # Contractions
@@ -174,7 +172,7 @@ def twitter_scrape():
     access_token_secret = 'GgByKXcBqQoW0G3sz4clhNWryOWCKKHzFkVn0yscHSkej'
     auth = tw.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
-    api = tw.API(auth, wait_on_rate_limit=True)
+    api = tw.API(auth)
     search_words = ["suicide","suicidal","selfharm","hatemyself","iwanttodie", "cutmyself", "ptsd"]
     tweetstore = []
     userid = []

@@ -27,4 +27,5 @@ urlpatterns = [
     path('annotate/', views.annotate, name="annotate"),
     path('', views.record, name='record'),
     path('scrape/', include('stats.urls')),
+    path('charts/', views.chart, name="chart"),
 ]
