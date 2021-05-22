@@ -13,13 +13,19 @@ def test(request):
     platform = request.POST.get('platform', 'twitter')
     raw_input = request.POST.get('text_post', 'This is the suicidal ideation detection website!')
     if platform == 'twitter':
-        output = utils.twitter_model(raw_input[:280])
+        output, sarc_op = utils.twitter_model(raw_input[:280])
         if output>0.9:
             final_output = 2
         elif output>0.7:
             final_output = 1
         else:
             final_output = 0
+
+        if sarc_op>0.7:
+            sarc_content = 1
+        else:
+            sarc_content = 0
+
     else:
         output = utils.reddit_model(raw_input)
         if output>=0.95:
@@ -28,7 +34,7 @@ def test(request):
             final_output = 1
         else:
             final_output = 0
-    return render(request, "test.html", {'raw_input': raw_input,'final_output': final_output, 'output': output})
+    return render(request, "test.html", {'raw_input': raw_input,'final_output': final_output, 'output': output, 'sarc_content': sarc_content, 'sarc_op': sarc_op})
 
 def annotate(request):
     if "GET" == request.method:
