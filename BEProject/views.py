@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.db.models import Count
+from plotly.offline import plot
+from plotly.graph_objs import Scatter
 
 from stats.models import Record
 import pandas as pd
@@ -62,6 +64,12 @@ def record(request):
     return render(request, "records.html", {'records': records})
 
 @login_required
-def chart(request):
-    records = Record.objects.values('username','output').annotate(count=Count('username', 'output')).order_by('created')
-    return render(request, "records.html", {'records': records})
+def charts(request):
+    #records = Record.objects.values('username','output').annotate(count=Count('username', 'output')).order_by('created')
+    x_data = [0,1,2,3]
+    y_data = [x**2 for x in x_data]
+    plot_div = plot([Scatter(x=x_data, y=y_data,
+                        mode='lines', name='test',
+                        opacity=0.8, marker_color='green')],
+               output_type='div')
+    return render(request, "charts.html", context={'plot_div': plot_div})

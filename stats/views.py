@@ -5,6 +5,7 @@ from BEProject.utils import twitter_scrape, reddit_scrape, reddit_model, twitter
 import pandas as pd
 from .models import Record
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
 
 # Create your views here.
 
@@ -23,7 +24,10 @@ def index(request):
         )
         for index, row in row_iter
     ]
-    Record.objects.bulk_create(objs)
+    try:
+        Record.objects.bulk_create(objs)
+    except IntegrityError as e:
+        print("data duplicate")
     row_iter = df2.iterrows()
     objs = [
         Record(
@@ -35,7 +39,10 @@ def index(request):
         )
         for index, row in row_iter
     ]
-    Record.objects.bulk_create(objs)
+    try:
+        Record.objects.bulk_create(objs)
+    except IntegrityError as e:
+        print("data duplicate")
     count = 0
     filter_columns = Record.objects.values_list('id', 'content', 'platform')
     for row in filter_columns:
