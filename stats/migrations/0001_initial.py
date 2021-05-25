@@ -24,16 +24,4 @@ class Migration(migrations.Migration):
                 ('output', models.IntegerField(choices=[('0', 'Low'), ('1', 'Medium'), ('2', 'High'), ('-1', 'Untested')], default=-1)),
             ],
         ),
-        migrations.CreateModel(
-            name='User',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('userid', models.CharField(max_length=20)),
-                ('username', models.CharField(max_length=20)),
-                ('low_si', models.TextField()),
-                ('med_si', models.TextField()),
-                ('high_si', models.TextField()),
-                ('platform', models.CharField(choices=[('twitter', 'twitter'), ('reddit', 'reddit')], max_length=7)),
-            ],
-        ),
     ]

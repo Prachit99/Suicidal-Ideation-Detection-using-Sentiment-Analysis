@@ -1,13 +1,100 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>test</title>
-</head>
-<body>
-  {% autoescape off %}
-  {{ plot_div }}
-  {% endautoescape %}
-</body>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>View records</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
+        
+      <link rel='stylesheet' href='https://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css'>
+      <link rel='stylesheet' href='https://cdn.datatables.net/responsive/1.0.4/css/dataTables.responsive.css'>
+        
+      <style>
+      body { 
+        font-size: 140%; 
+        margin-top: 20px;
+      }
+      
+      h2 {
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      .yellow_dot {
+        height: 20px;
+        width: 20px;
+        background-color: yellow;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .red_dot {
+        height: 20px;
+        width: 20px;
+        background-color: red;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .green_dot {
+        height: 20px;
+        width: 20px;
+        background-color: green;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      
+      table caption {
+          padding: .5em 0;
+      }
+
+      .p {
+        text-align: center;
+        padding-top: 140px;
+        font-size: 14px;
+      }
+      </style>
+
+      </head>
+      
+      <body translate="no" >
+        <button class="btn bg-light btn-lg">
+          {% if user.is_authenticated %}
+          Hello
+          {{ user.username }}!
+          {% endif %}</button>
+          <a class="dropdown-item" href="{% url 'logout' %}"><button class="btn btn-primary btn-lg">Logout</button></a>
+      <br>
+      <h3><center>Suicide Ideation Prediction</center></h3>
+      <br>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            {% autoescape off %}
+            {{ plot_low }}
+            {% endautoescape %}
+          </div>
+        </div>
+      </div>
+      
+  
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='https://cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js'></script>
+    <script src='https://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js'></script>
+    <script src='https://cdn.datatables.net/responsive/1.0.4/js/dataTables.responsive.js'></script>
+    <script id="rendered-js" >
+      $('table').DataTable(
+          {
+            responsive: false,
+            deferRender:    true,
+            searching:      true,
+            paging:         true,
+            info:           false,    
+          }
+      );
+    
+    </script>  
+  </body>
+      
 </html>

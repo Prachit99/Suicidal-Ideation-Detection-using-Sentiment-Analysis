@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.db.models import Count
 from plotly.offline import plot
-from plotly.graph_objs import Scatter
+from plotly.graph_objs import Bar, Scatter
+import datetime
 
 from stats.models import Record
 import pandas as pd
@@ -65,11 +66,25 @@ def record(request):
 
 @login_required
 def charts(request):
-    #records = Record.objects.values('username','output').annotate(count=Count('username', 'output')).order_by('created')
-    x_data = [0,1,2,3]
-    y_data = [x**2 for x in x_data]
-    plot_div = plot([Scatter(x=x_data, y=y_data,
-                        mode='lines', name='test',
-                        opacity=0.8, marker_color='green')],
-               output_type='div')
-    return render(request, "charts.html", context={'plot_div': plot_div})
+    records = Record.objects.filter(platform="twitter").values('username','output').annotate(count = Count('output')).values_list('username', 'output', 'count').order_by('username')
+    print(records)
+    x1_data = []
+    x2_data = []
+    x3_data = []
+    y1_data = []
+    y2_data = []
+    y3_data = []
+    for row in records:
+        if row[1] == 0:
+            x1_data.append(row[0])
+            y1_data.append(row[2])
+        elif row[1] == 1:
+            x2_data.append(row[0])
+            y2_data.append(row[2])
+        elif row[1] == 2:
+            x3_data.append(row[0])
+            y3_data.append(row[2])
+    plot_low = plot([Bar(x=x1_data, y=y1_data)], output_type='div')
+    plot_med = plot([Scatter(x=x2_data, y=y2_data, mode='lines', name='test', opacity=0.8, marker_color='yellow')], output_type='div')
+    plot_high = plot([Scatter(x=x3_data, y=y3_data, mode='lines', name='test', opacity=0.8, marker_color='red')], output_type='div')
+    return render(request, "charts.html", context={'plot_low': plot_low, 'plot_med': plot_med, 'plot_high': plot_high})
