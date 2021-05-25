@@ -78,6 +78,7 @@
                   <th>Id</th>
                   <th>Text</th>
                   <th>O/P</th>
+                  <th>Sarcasm</th>
                   <th>Created</th>
                 </tr>
               </thead>
@@ -89,8 +90,15 @@
                 <td>
                   {% if rec.output == 0 %}
                   <span class="green_dot"></span>
-                  {% elif final_output == 1 %}
+                  {% elif rec.output == 1 %}
                   <span class="yellow_dot"></span>
+                  {% elif rec.output == 2 %}
+                  <span class="red_dot"></span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if rec.sarc_content == 0 %}
+                  <span class="green_dot"></span>
                   {% else %}
                   <span class="red_dot"></span>
                   {% endif %}
@@ -123,6 +131,7 @@
               { data: 'Id', width: 20 },
               { data: 'Text', width: 600 },
               { data: 'O/P', width: 20 },
+              { data: 'Sarcasm', width: 20 },
               { data: 'Created',  width: 50}
             ]    
           }
