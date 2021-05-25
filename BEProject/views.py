@@ -85,6 +85,6 @@ def charts(request):
             x3_data.append(row[0])
             y3_data.append(row[2])
     plot_low = plot([Bar(x=x1_data, y=y1_data)], output_type='div')
-    plot_med = plot([Scatter(x=x2_data, y=y2_data, mode='lines', name='test', opacity=0.8, marker_color='yellow')], output_type='div')
-    plot_high = plot([Scatter(x=x3_data, y=y3_data, mode='lines', name='test', opacity=0.8, marker_color='red')], output_type='div')
+    plot_med = plot([Bar(x=x2_data, y=y2_data)], output_type='div')
+    plot_high = plot([Bar(x=x2_data, y=y2_data)], output_type='div')
     return render(request, "charts.html", context={'plot_low': plot_low, 'plot_med': plot_med, 'plot_high': plot_high})
