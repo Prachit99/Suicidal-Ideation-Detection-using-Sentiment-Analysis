@@ -62,9 +62,9 @@ def index(request):
             
         else:
             output = reddit_model(row[1])
-            if output<=0.09:
+            if output>=0.85:
                 output = 2
-            elif output<=0.15:
+            elif output>=0.65:
                 output = 1
             else:
                 output = 0
