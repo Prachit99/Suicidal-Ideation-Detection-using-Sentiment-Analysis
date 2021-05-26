@@ -47,13 +47,19 @@ def index(request):
     filter_columns = Record.objects.values_list('id', 'content', 'platform')
     for row in filter_columns:
         if row[2] == "twitter":
-            output = twitter_model(row[1])
+            output, sarcasm_op = twitter_model(row[1])
             if output>0.9:
                 output = 2
             elif output>0.7:
                 output = 1
             else:
                 output = 0
+
+            if sarcasm_op > 0.7:
+                sarcasm = True
+            else:
+                sarcasm = False
+            
         else:
             output = reddit_model(row[1])
             if output<=0.09:

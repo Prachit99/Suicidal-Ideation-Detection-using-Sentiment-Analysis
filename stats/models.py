@@ -12,6 +12,7 @@ class Record(models.Model):
     modified = models.DateTimeField(auto_now=True)
     platform = models.CharField(choices=platform_choices, max_length=7)
     output = models.IntegerField(default=-1, choices = output_choices)
+    sarcasm = models.BooleanField(default=False)
     
     def __str__(self):
         return self.content
