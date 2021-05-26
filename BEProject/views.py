@@ -32,9 +32,9 @@ def test(request):
 
     else:
         output = utils.reddit_model(raw_input)
-        if output>=0.95:
+        if output>=0.85:
             final_output = 2
-        elif output>=0.85:
+        elif output>=0.65:
             final_output = 1
         else:
             final_output = 0
