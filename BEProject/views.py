@@ -67,30 +67,38 @@ def annotate(request):
 
 @login_required
 def record(request):
-    records = Record.objects.all()
-    return render(request, "records.html", {'records': records})
+    records_r = Record.objects.filter(platform="reddit")
+    records_t = Record.objects.filter(platform="twitter")
+    return render(request, "records.html", {'reddit': records_r, "twitter": records_t})
 
 @login_required
 def charts(request):
-    records = Record.objects.filter(platform="twitter").values('username','output').annotate(count = Count('output')).values_list('username', 'output', 'count').order_by('username')
-    print(records)
+    r_t = Record.objects.filter(platform="twitter").values('username','output').annotate(count = Count('output')).values_list('username', 'output', 'count').order_by('created')
+    r_r = Record.objects.filter(platform="reddit").values('username','output').annotate(count = Count('output')).values_list('username', 'output', 'count').order_by('created')
     x1_data = []
     x2_data = []
     x3_data = []
+    x4_data = []
     y1_data = []
     y2_data = []
     y3_data = []
-    for row in records:
-        if row[1] == 0:
-            x1_data.append(row[0])
-            y1_data.append(row[2])
-        elif row[1] == 1:
+    y4_data = []
+    for row in r_t:
+        if row[1] == 1:
             x2_data.append(row[0])
             y2_data.append(row[2])
         elif row[1] == 2:
             x3_data.append(row[0])
             y3_data.append(row[2])
-    plot_low = plot([Bar(x=x1_data, y=y1_data)], output_type='div')
-    plot_med = plot([Bar(x=x2_data, y=y2_data)], output_type='div')
-    plot_high = plot([Bar(x=x2_data, y=y2_data)], output_type='div')
-    return render(request, "charts.html", context={'plot_low': plot_low, 'plot_med': plot_med, 'plot_high': plot_high})
+    for row in r_r:
+        if row[1] == 1:
+            x1_data.append(row[0])
+            y1_data.append(row[2])
+        elif row[1] == 2:
+            x4_data.append(row[0])
+            y4_data.append(row[2])
+    t_med = plot([Bar(x=x2_data, y=y2_data, marker_color="#1DA1F2")], output_type='div')
+    t_high = plot([Bar(x=x3_data, y=y3_data, marker_color="#1DA1F2")], output_type='div')
+    r_med = plot([Bar(x=x1_data, y=y1_data, marker_color="#FF5700")], output_type='div')
+    r_high = plot([Bar(x=x4_data, y=y4_data, marker_color="#FF5700")], output_type='div')
+    return render(request, "charts.html", context={'t_med': t_med, 't_high': t_high, 'r_med': r_med, 'r_high': r_high})

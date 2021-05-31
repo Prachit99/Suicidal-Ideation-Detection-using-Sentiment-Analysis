@@ -71,8 +71,33 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-12">
+            <p>Twitter users with mildly suicidal tweets</p>
             {% autoescape off %}
-            {{ plot_low }}
+            {{ t_med }}
+            {% endautoescape %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <p>Twitter users with highly suicidal tweets</p>
+            {% autoescape off %}
+            {{ t_high }}
+            {% endautoescape %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <p>Reddit users with mildly suicidal posts</p>
+            {% autoescape off %}
+            {{ r_med }}
+            {% endautoescape %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <p>Reddit users with highly suicidal posts</p>
+            {% autoescape off %}
+            {{ r_high }}
             {% endautoescape %}
           </div>
         </div>

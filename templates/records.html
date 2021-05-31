@@ -72,18 +72,18 @@
         <div class="row">
           <div class="col-xs-12">
             <table class="table table-bordered table-hover dt-responsive wrap-text">
-              <caption>Real time data from Twitter and Reddit</caption>
+              <caption>Real time data from Twitter</caption>
              <thead>
                 <tr>
                   <th>Id</th>
                   <th>Text</th>
                   <th>O/P</th>
-                  <th>Sarcasm</th>
                   <th>Created</th>
+                  <th>Modified</th>
                 </tr>
               </thead>
               <tbody>
-                {% for rec in records %}
+                {% for rec in twitter %}
             <tr>
                 <td>{{ rec.id }}</td>
                 <td>{{ rec.content }}</td>
@@ -96,14 +96,8 @@
                   <span class="red_dot"></span>
                   {% endif %}
                 </td>
-                <td>
-                  {% if rec.sarcasm == False %}
-                  <span class="green_dot"></span>
-                  {% else %}
-                  <span class="red_dot"></span>
-                  {% endif %}
-                </td>
                 <td>{{ rec.created }}</td>
+                <td>{{ rec.modified }}</td>
             </tr>
            {% endfor %}
               </tbody>
@@ -112,6 +106,45 @@
             </table>
           </div>
         </div>
+        <br>
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12">
+              <table class="table table-bordered table-hover dt-responsive wrap-text">
+                <caption>Real time data from Reddit</caption>
+               <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Text</th>
+                    <th>O/P</th>
+                    <th>Created</th>
+                    <th>Modified</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for rec in reddit %}
+              <tr>
+                  <td>{{ rec.id }}</td>
+                  <td>{{ rec.content }}</td>
+                  <td>
+                    {% if rec.output == 0 %}
+                    <span class="green_dot"></span>
+                    {% elif rec.output == 1 %}
+                    <span class="yellow_dot"></span>
+                    {% elif rec.output == 2 %}
+                    <span class="red_dot"></span>
+                    {% endif %}
+                  </td>
+                  <td>{{ rec.created }}</td>
+                  <td>{{ rec.modified }}</td>
+              </tr>
+             {% endfor %}
+                </tbody>
+                <tfoot>
+                </tfoot>
+              </table>
+            </div>
+          </div>
       </div>
       
   
@@ -131,8 +164,8 @@
               { data: 'Id', width: 20 },
               { data: 'Text', width: 600 },
               { data: 'O/P', width: 20 },
-              { data: 'Sarcasm', width: 20 },
-              { data: 'Created',  width: 50}
+              { data: 'Created',  width: 35},
+              { data: 'Modified', width: 35 },
             ]    
           }
       );
