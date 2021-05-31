@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from stats.models import Record
-from BEProject.utils import twitter_scrape, reddit_scrape, reddit_model, twitter_model
+from BEProject.utils import twitter_sarcasm, twitter_scrape, reddit_scrape, reddit_model
 import pandas as pd
 from .models import Record
 from django.contrib.auth.decorators import login_required
@@ -47,7 +47,7 @@ def index(request):
     filter_columns = Record.objects.values_list('id', 'content', 'platform')
     for row in filter_columns:
         if row[2] == "twitter":
-            output, sarcasm_op = twitter_model(row[1])
+            output, sarcasm_op = twitter_sarcasm(row[1])
             if output>0.9:
                 output = 2
             elif output>0.7:
@@ -68,7 +68,7 @@ def index(request):
                 output = 1
             else:
                 output = 0
-        Record.objects.filter(id=row[0]).update(output=output)
+        Record.objects.filter(id=row[0]).update(output=output, sarcasm=sarcasm)
         count = count+1
         print(count)
 

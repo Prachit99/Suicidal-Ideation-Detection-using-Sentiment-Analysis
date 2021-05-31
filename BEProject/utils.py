@@ -159,9 +159,7 @@ def sarcasm_model(raw_input):
     output = loaded_model.predict(tw)
     return output[0][0]
 
-def twitter_model(raw_input):
-    clean_tweet = preprocess_tweet(raw_input)
-    sarc_op = sarcasm_model(clean_tweet)
+def twitter_model(clean_tweet):
     with open('Models/twitter_model1/tokenizer_t.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
     tw = tokenizer.texts_to_sequences([clean_tweet]) #test_word
@@ -173,8 +171,14 @@ def twitter_model(raw_input):
     # loaded_model.load_weights("Models/twitter_model/model_t.h5")
     loaded_model = load_model("Models/twitter_model1", compile=False)
     output = loaded_model.predict(tw)
-    return output[0][0], sarc_op
+    return output[0][0]
 
+def twitter_sarcasm(raw_input):
+    clean_tweet = preprocess_tweet(raw_input)
+    sarc_op = sarcasm_model(clean_tweet)
+    output = twitter_model(clean_tweet)
+    return output, sarc_op
+    
 def reddit_model(raw_input):
     loaded_model = load_model("Models/reddit_model", custom_objects={"KerasLayer": hub.KerasLayer}, compile=False)
     output = loaded_model.predict([raw_input])

@@ -270,26 +270,17 @@ a,a:hover{
                         <p>
                           The floating point prediction is: {{output}}
                         </p>
-                        <!-- {% if sarc_content %} -->
-                        {% if sarc_content == 1 %}
-                        <p class="text-warning bg-dark">
-                          This post might contain sarcastic content! ({{sarc_op}})
-                        </p>
-                        {% else %}
-                        <p class="text-success bg-dark">
-                          This post does not contain any sarcastic content! ({{sarc_op}})
-                        </p>
-                        {% endif %}
-                        <!-- {% endif %} -->
-                        <p>
-                          *For Twitter model <br>
-                          1 >= value > 0.9 means High Suicidal Ideation <br>
-                          0.9 >= value > 0.7 means Mild Suicidal Ideation <br>
-                          0.7 >= value >= 0 means No Suicidal Ideation <br>
-                          *For Reddit model <br>
-                          1 >= value >= 0.85 means High Suicidal Ideation <br>
-                          0.85 > value >= 0.65 means Mild Suicidal Ideation <br>
-                          0.65 > value >= 0 means No Suicidal Ideation <br>
+                        <p>{% if sarc_content == 1 %}
+                          *This post might contain sarcastic content!<br>
+                          {% endif %}
+                          #Twitter<br>
+                          1 >= value > 0.9 -> High SI <br>
+                          0.9 >= value > 0.7 -> Mild SI <br>
+                          0.7 >= value >= 0 -> No SI <br>
+                          #Reddit<br>
+                          1 >= value >= 0.85 -> High SI <br>
+                          0.85 > value >= 0.65 -> Mild SI <br>
+                          0.65 > value >= 0 -> No SI <br>
                         </p>
                     </div>
                 </div>
