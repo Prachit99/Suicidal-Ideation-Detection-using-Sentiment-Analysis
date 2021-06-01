@@ -7,7 +7,7 @@
 
   <meta charset="UTF-8">
 
-  <title>Login</title>
+  <title>Test the models</title>
   
   
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
@@ -203,6 +203,27 @@ a,a:hover{
 .myform-area .form-area .myform-button .myform-btn:hover{
     background: #07315B;
 }
+
+.footer {
+        position:fixed;
+        bottom:0;
+        left:0;
+        width:100%;
+        height: 30px;
+        background-color: #D0DAEE;
+      }
+      .footer-text-left {
+        font-size:20px;
+        padding-left: 30%;
+        float:center;
+        word-spacing:8px;
+      }
+      .float-right {
+        padding-left: 70%;
+        font-size: 20px;
+        word-spacing:15px;
+      }
+
 </style>
 
   <script>
@@ -221,7 +242,7 @@ a,a:hover{
 </head>
 
 <body translate="no" >
-    
+  
   <section class="myform-area">
     <div class="container">
       <div class="row justify-content-center">
@@ -232,7 +253,7 @@ a,a:hover{
                       <form method="POST" action={% url 'test' %}>
                           {% csrf_token %}
                           <div class="form-group">
-                              <textarea class="form-control" type="text" id="text_post" name="text_post" rows=5 required>{{raw_input}}</textarea>
+                              <textarea class="form-control" type="text" id="text_post" name="text_post" rows=8 required>{{raw_input}}</textarea>
                           </div>                                  
                       <ul>
                         <li><div class="reddit"><input type="radio" name="platform" checked value="reddit"><i class="fa fa-reddit"></i><span>reddit</span></input></div></li>
@@ -289,7 +310,9 @@ a,a:hover{
     </div>
   </section>
   
-  
+  <div class="footer">
+    <p class="footer-text-left">Created by Aditi, Riddhi, Athmika & Prachit</p>
+  </div>
   
   
           

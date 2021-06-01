@@ -202,7 +202,7 @@ def twitter_scrape():
         # Collect tweets
         tweets = tw.Cursor(api.search,
                     q=search_word,
-                    lang="en").items(10)
+                    lang="en").items(1)
         # Collect a list of tweets
         for tweet in tweets:
             tweetstore.append(tweet.text) 
@@ -215,7 +215,7 @@ def twitter_scrape():
 
 def reddit_scrape():
     reddit = praw.Reddit(client_id='uycdldw7XT9KNA', client_secret='mdW0O0OD7np6UpM67VVCozeUvdEPvw', user_agent='Reddit webscrapping')
-    all_subreddit = reddit.subreddit('SuicideWatch+depression+selharm').hot(limit=10)
+    all_subreddit = reddit.subreddit('SuicideWatch+depression+selharm').hot(limit=1)
     reddits = []
     userid = []
     created = []

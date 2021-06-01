@@ -20,6 +20,25 @@
         text-align: center;
         padding: 20px 0;
       }
+      .footer {
+        position:fixed;
+        bottom:0;
+        left:0;
+        width:100%;
+        height: 30px;
+        background-color: #D0DAEE;
+      }
+      .footer-text-left {
+        font-size:20px;
+        padding-left: 30%;
+        float:center;
+        word-spacing:8px;
+      }
+      .float-right {
+        padding-left: 55%;
+        font-size: 20px;
+        word-spacing:15px;
+      }
 
       .yellow_dot {
         height: 20px;
@@ -59,13 +78,16 @@
       </head>
       
       <body translate="no" >
-        <button class="btn bg-light btn-lg">
+        <p class="float-right">
           {% if user.is_authenticated %}
           Hello
           {{ user.username }}!
-          {% endif %}</button>
-          <a class="dropdown-item" href="{% url 'logout' %}"><button class="btn btn-primary btn-lg">Logout</button></a>
-      <br>
+          {% endif %}
+          <a class="dropdown-item" href="{% url 'record' %}">Home</a>
+          <a class="dropdown-item" href="{% url 'test' %}">Test</a>
+          <a class="dropdown-item" href="{% url 'charts' %}">Charts</a>
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a></p>
+      <br> 
       <h3><center>Suicide Ideation Prediction</center></h3>
       <br>
       <div class="container">
@@ -78,6 +100,7 @@
                   <th>Id</th>
                   <th>Text</th>
                   <th>O/P</th>
+                  <th>Sarcastic?</th>
                   <th>Created</th>
                   <th>Modified</th>
                 </tr>
@@ -94,6 +117,12 @@
                   <span class="yellow_dot"></span>
                   {% elif rec.output == 2 %}
                   <span class="red_dot"></span>
+                  {% endif %}
+                </td>
+                <td>{% if rec.sarcasm %}
+                  Maybe
+                  {% else %}
+                  No
                   {% endif %}
                 </td>
                 <td>{{ rec.created }}</td>
@@ -117,6 +146,7 @@
                     <th>Id</th>
                     <th>Text</th>
                     <th>O/P</th>
+                    <th>Sarcastic?</th>
                     <th>Created</th>
                     <th>Modified</th>
                   </tr>
@@ -135,6 +165,7 @@
                     <span class="red_dot"></span>
                     {% endif %}
                   </td>
+                  <td>No</td>
                   <td>{{ rec.created }}</td>
                   <td>{{ rec.modified }}</td>
               </tr>
@@ -147,7 +178,9 @@
           </div>
       </div>
       
-  
+      <div class="footer">
+        <p class="footer-text-left">Created by Aditi, Riddhi, Athmika & Prachit</p>
+      </div>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script src='https://cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js'></script>
     <script src='https://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js'></script>
@@ -164,12 +197,12 @@
               { data: 'Id', width: 20 },
               { data: 'Text', width: 600 },
               { data: 'O/P', width: 20 },
+              { data: 'Sarcastic', width: 20 },
               { data: 'Created',  width: 35},
               { data: 'Modified', width: 35 },
             ]    
           }
       );
-    
     </script>  
   </body>
       

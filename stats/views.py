@@ -44,9 +44,9 @@ def index(request):
     except IntegrityError as e:
         print("data duplicate")
     count = 0
-    filter_columns = Record.objects.values_list('id', 'content', 'platform')
+    filter_columns = Record.objects.values_list('id', 'content', 'platform', 'output')
     for row in filter_columns:
-        if row[2] == "twitter":
+        if row[2] == "twitter" and row[3]==-1:
             output, sarcasm_op = twitter_sarcasm(row[1])
             if output>0.9:
                 output = 2
@@ -59,8 +59,8 @@ def index(request):
                 sarcasm = True
             else:
                 sarcasm = False
-            
-        else:
+            Record.objects.filter(id=row[0]).update(output=output, sarcasm=sarcasm)
+        elif row[3]==-1:
             output = reddit_model(row[1])
             if output>=0.85:
                 output = 2
@@ -68,7 +68,7 @@ def index(request):
                 output = 1
             else:
                 output = 0
-        Record.objects.filter(id=row[0]).update(output=output, sarcasm=sarcasm)
+            Record.objects.filter(id=row[0]).update(output=output)
         count = count+1
         print(count)
 
